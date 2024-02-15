@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'dashboard.html.twig' %}
 
 {% block title %}New Destination{% endblock %}
 
@@ -8,4 +8,5 @@
     {{ include('destination/_form.html.twig') }}
 
     <a href="{{ path('app_destination_index') }}">back to list</a>
-{% endblock %}
+
+  {% endblock %}

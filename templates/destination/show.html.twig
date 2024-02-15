@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'dashboard.html.twig' %}
 
 {% block title %}Destination{% endblock %}
 
@@ -17,7 +17,8 @@
             </tr>
             <tr>
                 <th>Img</th>
-                <td>{{ destination.img }}</td>
+                <td><img src="{{ asset('uploads/destination/' ~ destination.img) }}"></td>
+
             </tr>
             <tr>
                 <th>State</th>

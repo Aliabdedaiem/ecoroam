@@ -6,6 +6,8 @@ use App\Entity\Destination;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class DestinationType extends AbstractType
 {
@@ -13,7 +15,25 @@ class DestinationType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('img')
+           
+            ->add('img', FileType::class, [
+                'label' => 'votre image  (JPEG file)',
+
+             
+
+                // unmapped fields can't define their validation using attributes
+                // in the associated entity, so you can use the PHP constraint classes
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid photo',
+                    ])
+                ],
+            ])
             ->add('state')
             ->add('address')
             ->add('prix')
