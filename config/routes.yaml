@@ -4,3 +4,13 @@
 destination_new:
     path: /destination/new
     controller: App\Controller\DestinationController::new
+
+
+destination_show:
+    path: /destination/destinations
+    controller: App\Controller\DestinationController::showDest
+
+reservation_create:
+    path: /reservation/create/{destinationId}
+    controller: App\Controller\ReservationController::create
+

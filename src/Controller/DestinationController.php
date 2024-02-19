@@ -24,6 +24,21 @@ class DestinationController extends AbstractController
             'destinations' => $destinationRepository->findAll(),
         ]);
     }
+    #[Route('/destinations', name: 'app_destination_indextemp', methods: ['GET'])]
+
+    public function showDest(EntityManagerInterface $entityManager)
+    {
+        // Récupérer tous les articles
+        $dest = $entityManager->getRepository(Destination::class)->findAll();
+
+    
+        // Créer le rendu Twig
+        return $this->render('destination/distinations.html.twig', [
+            'destination' => $dest,
+        ]);
+    }
+    
+
 
     #[Route('/new', name: 'app_destination_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
@@ -75,6 +90,17 @@ class DestinationController extends AbstractController
             'destination' => $destination,
         ]);
     }
+
+    #[Route('/details/{id}', name: 'app_destination_showdetails', methods: ['GET'])]
+    public function showdetails(Destination $destination): Response
+    {
+        return $this->render('destination/destinationdetails.html.twig', [
+            'destination' => $destination,
+        ]);
+    }
+
+    
+  
 
     #[Route('/{id}/edit', name: 'app_destination_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Destination $destination, EntityManagerInterface $entityManager): Response

@@ -32,7 +32,9 @@
     18. Sliders css
     19. Wrapper css
 
------------------------------------------------------------------------------------*/
+-------------
+----------------------------------------------------------------------*/
+
 .contact-info-item .info p, .sidebar-widget-area .booking-info-widget ul.info-list li span span, .sidebar-widget-area .booking-form-widget .sidebar-booking-form .booking-total .total, .sidebar-widget-area .booking-form-widget .sidebar-booking-form .booking-extra .extra, .sidebar-widget-area .booking-form-widget .sidebar-booking-form .booking-item label, .sidebar-widget-area .tag-cloud-widget a, .blog-post .entry-content .block-quote span, .single-blog-post-four .entry-content .main-btn.filled-btn:hover i, .gw-testimonial-item-two .testimonial-inner-content > p, .gw-testimonial-item .testimonial-inner-content > p, .tour-area-nav .share-nav a, .related-tour-place .place-arrows .slick-arrow:hover, .booking-form-two .booking-btn, .activity-nav-tab .nav-tabs li a, .single-service-item-four:hover .content h3.title, .single-service-item-three .content .meta span.rate, .single-service-item .content .icon-btn, .check-list li, .single-skill-circle .inner-circle .number, .hero-wrapper-two .hero-content .hero-button .main-btn.primary-btn i, .nav-right-item .lang-dropdown .nice-select ul.list, .header-navigation .main-menu ul > li .sub-menu li a, .btn-link, .main-btn.filled-btn:hover i, .main-btn.filled-btn, .main-btn i, h6, h5, h4, h3, h2, h1 {
   color: #1C231F;
 }
@@ -72,6 +74,7 @@
 .contact-form .form_control, .contact-info-item, .sidebar-widget-area .booking-form-widget, .sidebar-widget-area .tag-cloud-widget, .sidebar-widget-area .search-widget, .comments-respond, .blog-post .entry-content .block-quote, .review-form-area, .days-area .nav-tabs, .single-place-item-three, .booking-form .nice-select, .booking-form .form_control, .activity-nav-tab .nav-tabs li a, .single-service-item-three, .single-activity-item .content, .fancy-icon-box-three, .fancy-icon-box-two .icon, .fancy-icon-box, .gray-bg {
   background-color: #F9F9F7;
 }
+
 
 h1 {
   font-size: 85px;
@@ -804,12 +807,13 @@ button {
 =================----*/
 /* Transparent Header  */
 .transparent-header {
-  position: absolute;
-  background-color: transparent;
+  position: fixed;
+  background-color: white;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 999;
+  
 }
 @media (max-width: 991px) {
   .transparent-header {
@@ -817,7 +821,7 @@ button {
   }
 }
 
-/* Header Navigation */
+
 .header-navigation .nav-overlay {
   position: fixed;
   top: 0;
@@ -882,7 +886,7 @@ button {
   top: 120%;
   width: 250px;
   opacity: 0;
-  visibility: hidden;
+  margin-bottom: 100px;
   -webkit-transition: all 0.2s;
   transition: all 0.2s;
   z-index: 99;
@@ -985,7 +989,7 @@ button {
   padding: 0;
   -webkit-box-shadow: none;
           box-shadow: none;
-  background-color: transparent;
+  background-color: white;
   visibility: visible;
   opacity: 1;
   display: none;
@@ -1015,7 +1019,7 @@ button {
 .header-navigation .navbar-toggler {
   padding: 10px 7px;
   border: 1px solid rgba(0, 0, 0, 0.7);
-  background-color: transparent;
+  background-color: white;
   cursor: pointer;
   display: none;
   border-radius: 5px;
@@ -1633,6 +1637,7 @@ button {
 .page-banner .page-banner-content ul.breadcrumb-link li.active {
   text-decoration: underline;
 }
+
 
 /*---==================
     04. About css 
@@ -5109,6 +5114,7 @@ form.comment-form .form_control:focus {
 /*---==================
     17. Footer css 
 =================----*/
+
 .black-bg .footer-copyright, .black-bg .footer-widget {
   color: #E1E1E1;
 }
@@ -5165,6 +5171,14 @@ form.comment-form .form_control:focus {
 }
 .service-nav-widget .footer-content .footer-widget-nav {
   width: 45%;
+}
+.form-container {
+  max-width: 500px; /* Adjust as needed */
+  margin: 0 auto; /* Center the container horizontally */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #613838;
 }
 .service-nav-widget .footer-content .footer-widget-nav li:not(:last-child) {
   margin-bottom: 10px;
