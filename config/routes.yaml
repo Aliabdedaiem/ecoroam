@@ -14,3 +14,6 @@ reservation_create:
     path: /reservation/create/{destinationId}
     controller: App\Controller\ReservationController::create
 
+app_login:
+    path: /login
+    controller: App\Controller\SecurityController::login

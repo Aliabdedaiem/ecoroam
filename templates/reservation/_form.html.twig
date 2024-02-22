@@ -1,5 +1,6 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="main-btn primary-btn">{{ button_label|default('BOOK') }}<i
-                                        class="fas fa-paper-plane"></i></button>
+  {{ form_row(form.startdate) }}
+    {{ form_row(form.enddate) }}
+
+    <button class="main-btn primary-btn">{{ button_label|default('BOOK') }}<i class="fas fa-paper-plane"></i></button>
 {{ form_end(form) }}
