@@ -10,6 +10,7 @@
 <title>{% block title %}Home{% endblock %}</title>
 <link rel="icon" href="favicon.ico" type="image/x-icon"> <!-- Favicon-->
 {% block css%}
+
 <link rel="stylesheet" href="{{asset ('plugins/bootstrap/css/bootstrap.min.css')}}">
 <link rel="stylesheet" href="{{asset ('plugins/morrisjs/morris.css')}}" />
 <link rel="stylesheet" href="{{asset ('plugins/jvectormap/jquery-jvectormap-2.0.3.min.css')}}"/>
@@ -526,19 +527,19 @@
                     <ul class="ml-menu">
                          <li><a href="form-wizard.html">User Form </a></li>
                         <li><a href="{{ path('app_destination_new') }}">Destination Form</a></li>
-                        <li><a href="advanced-form-elements.html">Activity Form</a></li>
-                        <li><a href="form-examples.html">Shop Form</a></li>
+                        <li><a href="{{ path('app_activities_new') }}">Activity Form</a></li>
+                        <li><a href="{{ path('app_events_new') }}">Events Form</a></li>
                         <li><a href="form-validation.html">Education Form</a></li>
                         <li><a href="form-editors.html">Blog form</a></li>
                     
                     </ul>
-                </li>app_destination_index
+                </li>
                 <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-grid"></i><span>Tables</span> <span class="badge badge-info float-right">6</span></a>
                     <ul class="ml-menu">         
                         <li><a href="jquery-datatable.html">Users List</a></li>
                         <li><a href="{{ path('app_destination_index') }}">Destination List</a></li>
-                        <li><a href="normal-tables.html">Activity List</a></li>
-                        <li><a href="jquery-datatable.html">Articles List</a></li>
+                        <li><a href="{{ path('app_activities_index') }}">Activity List</a></li>
+                        <li><a href="{{ path('app_events_index') }}">Events List</a></li>
                         <li><a href="{{ path('app_destination_index') }}">Blog List </a></li>
                         
                         
@@ -604,7 +605,7 @@
     
 </aside>
 
- Main Content 
+ Main  
 <section class="content home">
 {% block body %}
    <!-- <div class="container-fluid">

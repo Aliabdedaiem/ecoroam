@@ -4,3 +4,18 @@
 destination_new:
     path: /destination/new
     controller: App\Controller\DestinationController::new
+activities_new:
+    path: /activities/new
+    controller: App\Controller\ActivitiesController::new
+
+events_new:
+    path: /events/new
+    controller: App\Controller\EventsController::new
+    
+activities_show:
+    path: /activities/activities
+    controller: App\Controller\ActivitiesController::showDest   
+
+events_show:
+    path: /events/events
+    controller: App\Controller\EventsController::showDest  
