@@ -10,9 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-
 
 #[Route('/destination')]
 class DestinationController extends AbstractController
@@ -26,36 +23,13 @@ class DestinationController extends AbstractController
     }
 
     #[Route('/new', name: 'app_destination_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $destination = new Destination();
         $form = $this->createForm(DestinationType::class, $destination);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) 
-        {
-            
-            $brochureFile = $form->get('img')->getData();
-
-            // this condition is needed because the 'brochure' field is not required
-            // so the PDF file must be processed only when a file is uploaded
-            if ($brochureFile) {
-                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
-
-                // Move the file to the directory where brochures are stored
-                try {
-                    $brochureFile->move(
-                        $this->getParameter('destination_img'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
-                $destination->setImg($newFilename);
-            }
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($destination);
             $entityManager->flush();
 
@@ -105,3 +79,4 @@ class DestinationController extends AbstractController
         return $this->redirectToRoute('app_destination_index', [], Response::HTTP_SEE_OTHER);
     }
 }
+

@@ -22,7 +22,7 @@
 <!-- Page Loader -->
 <div class="page-loader-wrapper">
     <div class="loader">
-        <div class="m-t-30"><img src="public/images/logo.svg" width="48" height="48" alt="Alpino"></div>
+        <div class="m-t-30"><img src="images/logo.svg" width="48" height="48" alt="Alpino"></div>
         <p>Please wait...</p>        
     </div>
 </div>
@@ -528,11 +528,12 @@
                         <li><a href="{{ path('app_destination_new') }}">Destination Form</a></li>
                         <li><a href="advanced-form-elements.html">Activity Form</a></li>
                         <li><a href="form-examples.html">Shop Form</a></li>
-                        <li><a href="form-validation.html">Education Form</a></li>
+                        <!--<li><a href="form-validation.html">Education Form</a></li>-->
+                        <li><a href="{{ path('app_course_new') }}">Education Form</a></li>
                         <li><a href="form-editors.html">Blog form</a></li>
                     
                     </ul>
-                </li>app_destination_index
+                </li><!--app_destination_index1-->
                 <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-grid"></i><span>Tables</span> <span class="badge badge-info float-right">6</span></a>
                     <ul class="ml-menu">         
                         <li><a href="jquery-datatable.html">Users List</a></li>
@@ -540,7 +541,7 @@
                         <li><a href="normal-tables.html">Activity List</a></li>
                         <li><a href="jquery-datatable.html">Articles List</a></li>
                         <li><a href="{{ path('app_destination_index') }}">Blog List </a></li>
-                        
+                        <li><a href="{{ path('app_course_index') }}">Education list</a></li>
                         
                     </ul>
                 </li>            
