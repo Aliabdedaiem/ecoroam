@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ActivitiesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -37,6 +39,14 @@ class Activities
 
     #[ORM\ManyToOne(inversedBy: 'Activities')]
     private ?Events $events = null;
+
+    #[ORM\ManyToMany(targetEntity: Events::class, mappedBy: 'events')]
+    private Collection $event;
+
+    public function __construct()
+    {
+        $this->event = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -117,6 +127,33 @@ class Activities
     public function __toString(): string
     {
         return $this->getName(); // Assuming 'name' is a property of the Activities entity
+    }
+
+    /**
+     * @return Collection<int, Events>
+     */
+    public function getEvent(): Collection
+    {
+        return $this->event;
+    }
+
+    public function addEvent(Events $event): static
+    {
+        if (!$this->event->contains($event)) {
+            $this->event->add($event);
+            $event->addEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Events $event): static
+    {
+        if ($this->event->removeElement($event)) {
+            $event->removeEvent($this);
+        }
+
+        return $this;
     }
    
 }

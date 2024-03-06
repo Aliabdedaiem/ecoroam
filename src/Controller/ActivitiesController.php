@@ -15,18 +15,44 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\File;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use MercurySeries\FlashyBundle\FlashyNotifier;
+
+
+
+
 
 #[Route('/activities')]
 class ActivitiesController extends AbstractController
-{
-    
+{   private $session;
+    private $flashyNotifier;
+   
+        
 
+
+
+    public function __construct(SessionInterface $session, FlashyNotifier $flashyNotifier)
+    {
+        $this->session = $session;
+        $this->flashyNotifier = $flashyNotifier;
+        
+    }
+   
+
+
+
+    
 
     #[Route('/', name: 'app_activities_index', methods: ['GET'])]
     public function index(ActivitiesRepository $activitiesRepository): Response
     {
+        $successFlash = $this->get('session')->getFlashBag()->get('success');
         return $this->render('activities/index.html.twig', [
             'activities' => $activitiesRepository->findAll(),
+           'successFlash' => $successFlash,
         ]);
     }
 
@@ -83,6 +109,7 @@ class ActivitiesController extends AbstractController
            // }
             $entityManager->persist($activity);
             $entityManager->flush();
+            $this->flashyNotifier->success('Activity created with success !');
 
             return $this->redirectToRoute('app_activities_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -145,6 +172,7 @@ class ActivitiesController extends AbstractController
 
         // Persist changes to the database
         $entityManager->flush();
+        $this->flashyNotifier->success('Activity updated with success !');
 
         // Redirect the user
         return $this->redirectToRoute('app_activities_index');
@@ -169,4 +197,8 @@ class ActivitiesController extends AbstractController
 
         return $this->redirectToRoute('app_activities_index', [], Response::HTTP_SEE_OTHER);
     }
+    
+    
+
+   
 }

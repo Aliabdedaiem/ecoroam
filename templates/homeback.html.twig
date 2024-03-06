@@ -1,0 +1,14 @@
+{% extends 'dashboard.html.twig' %}
+<h1>Activity Visit Counts</h1>
+<table>
+    <tr>
+        <th>Activity Name</th>
+        <th>Visit Count</th>
+    </tr>
+    {% for activity in activities %}
+        <tr>
+            <td>{{ activity.name }}</td>
+            <td>{{ visitCounts[activity.id] }}</td>
+        </tr>
+    {% endfor %}
+</table>

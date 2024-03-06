@@ -6,6 +6,7 @@ use App\Entity\Activities;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+
 /**
  * @extends ServiceEntityRepository<Activities>
  *
@@ -20,6 +21,11 @@ class ActivitiesRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Activities::class);
     }
+
+    
+    
+     
+
 
 //    /**
 //     * @return Activities[] Returns an array of Activities objects
@@ -45,4 +51,6 @@ class ActivitiesRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    
+    
 }

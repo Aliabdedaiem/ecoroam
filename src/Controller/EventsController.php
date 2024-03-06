@@ -13,10 +13,16 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File;
+use App\Entity\Activities;
+
 
 #[Route('/events')]
 class EventsController extends AbstractController
 {
+
+   
+
+
     #[Route('/', name: 'app_events_index', methods: ['GET'])]
     public function index(EventsRepository $eventsRepository): Response
     {
@@ -43,7 +49,11 @@ class EventsController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $event = new Events();
+      // Access id property on each activity
+    // Do something with $id
+
         $form = $this->createForm(EventsType::class, $event);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

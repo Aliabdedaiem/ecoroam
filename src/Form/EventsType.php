@@ -99,12 +99,11 @@ class EventsType extends AbstractType
                     new Assert\Length(['max' => 1000]),
                 ],
             ])
-            ->add('activities', EntityType::class, [
+            ->add('events', EntityType::class, [
                 
                 'class' => Activities::class,
                 'label' => 'Select activities',
                 'multiple' => true,
-                'expanded' => true,
                 'choice_label' => 'name', // Set the property to display as the label
                 'constraints' => [
                     new Count([
@@ -113,8 +112,9 @@ class EventsType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('date');
-        ;
+     ->add('date');
+      
+        
        
        
     }
@@ -124,6 +124,8 @@ class EventsType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Events::class,
+            
+
         ]);
     }
 }

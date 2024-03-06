@@ -45,11 +45,16 @@ class Events
     private ?string $description = null;
 
     #[ORM\OneToMany(targetEntity: Activities::class, mappedBy: 'events')]
+    #[Assert\NotBlank(message: "Veuillez ajouter une activite.")]
     private Collection $Activities;
+
+    #[ORM\ManyToMany(targetEntity: Activities::class, inversedBy: 'event')]
+    private Collection $events;
 
     public function __construct()
     {
         $this->Activities = new ArrayCollection();
+        $this->events = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -155,6 +160,30 @@ class Events
                 $activity->setEvents(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Activities>
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Activities $event): static
+    {
+        if (!$this->events->contains($event)) {
+            $this->events->add($event);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Activities $event): static
+    {
+        $this->events->removeElement($event);
 
         return $this;
     }

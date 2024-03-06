@@ -37,8 +37,8 @@
                 <td>{{ event.date ? event.date.format(' %d / %m / %y ') : '' }}</td>
                 <td>
                                 <ul>
-                                    {% for activities in event.activities %}
-                                        <li>{{ activities }}</li>
+                                    {% for activity in event.events %}
+                                    <li>{{ activity.name }}</li> {# Assuming 'name' is a property of the Activity entity #}
                                     {% endfor %}
                                 </ul>
                             </td>

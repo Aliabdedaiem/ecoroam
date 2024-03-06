@@ -19,3 +19,25 @@ activities_show:
 events_show:
     path: /events/events
     controller: App\Controller\EventsController::showDest  
+
+app_activities_visit_counts:
+    path: /visit-counts
+    controller: App\Controller\ActivitiesController::visitCounts
+
+app_events_search:
+    path: /search
+    controller: App\Controller\EventsController::search
+    methods: ['GET']
+
+participation_submit:
+    path: /participation/submit
+    controller: App\Controller\ParticipationController::handleParticipation
+    methods: [POST]
+
+thank_you:
+    path: /thank-you
+    controller: App\Controller\ParticipationController::thankYou
+
+participation_form:
+    path: /participation/form
+    controller: App\Controller\ParticipationController::showForm

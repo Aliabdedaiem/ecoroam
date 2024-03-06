@@ -3,6 +3,10 @@
 {% block title %}Activities index{% endblock %}
 
 {% block body %}
+<link rel="stylesheet" href="{{ asset('bundles/mercuryseriesflashy/css/flashy.css') }}">
+ <script src="//code.jquery.com/jquery.js"></script>
+ <script src="{{ asset('bundles/mercuryseriesflashy/js/flashy.js') }}"></script>
+
     <h3>Activities Table</h3>
 <div class="row">
                             <div class="col-md-12">
@@ -50,4 +54,5 @@
                                 </table>
   <button  class="btn btn-raised btn-primary btn-round waves-effect"><a href="{{ path('app_activities_new') }}">Create</a></button>
                                 </div>
+                                {{ include('@MercurySeriesFlashy/flashy.html.twig') }}
 {% endblock %}
