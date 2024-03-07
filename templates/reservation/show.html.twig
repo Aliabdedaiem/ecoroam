@@ -39,9 +39,19 @@
                 <td>{{ reservation.status }}</td>
             </tr>
         </tbody>
-    </table>
-        <h4><a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}">Edit Reservation</a></h4>
+         <div class="menu-button d-xl-block d-none">
+                                        <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}" class="main-btn primary-btn">Edit My Reservation<i
+                                        class="fas fa-paper-plane"></i></a>
 
+                                         </div>
+    </table>
+                 
+                                                       <div class="menu-button d-xl-block d-none">
+                                        <a href="{{ path('app_reservation_showpdf', {'id': reservation.id}) }}" class="main-btn primary-btn">Print my reservation<i
+                                        class="fas fa-paper-plane"></i></a>
+
+                                         </div>
+       
 
           </div>
                                 </div>

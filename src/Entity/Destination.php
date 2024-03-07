@@ -6,6 +6,8 @@ use App\Repository\DestinationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: DestinationRepository::class)]
 class Destination
@@ -15,22 +17,35 @@ class Destination
     #[ORM\Column]
     private ?int $id = null;
 
+
+    
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le nom ne peut pas être vide.")]
+    #[Assert\Length(max: 255, maxMessage: "Le nom ne peut pas dépasser {{ limit }} caractères.")]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "L'URL de l'image ne peut pas être vide.")]
+    #[Assert\Url(message: "L'URL de l'image n'est pas valide.")]
     private ?string $img = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "L'état ne peut pas être vide.")]
+    #[Assert\Length(max: 255, maxMessage: "L'état ne peut pas dépasser {{ limit }} caractères.")]
     private ?string $state = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "L'adresse ne peut pas être vide.")]
+    #[Assert\Length(max: 255, maxMessage: "L'adresse ne peut pas dépasser {{ limit }} caractères.")]
     private ?string $address = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Le prix ne peut pas être vide.")]
+    #[Assert\Type(type: "float", message: "Le prix doit être un nombre.")]
     private ?float $prix = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "La description ne peut pas être vide.")]
     private ?string $description = null;
 
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'Destination')]

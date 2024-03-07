@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ReservationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
@@ -14,11 +15,24 @@ class Reservation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $startdate = null;
+  
 
+      /**
+     * @Assert\NotBlank(message="The start date is required")
+     * @Assert\GreaterThan(value="today", message="The start date must be after today")
+     */
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $enddate = null;
+
+    private $startdate;
+
+    /**
+     * @Assert\NotBlank(message="The end date is required")
+     * @Assert\GreaterThan(value="today", message="The end date must be after today")
+     * @Assert\GreaterThan(propertyPath="startdate", message="The end date must be after the start date")
+     */
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+
+    private $enddate;
 
     #[ORM\Column]
     private ?int $number = null;
@@ -32,6 +46,16 @@ class Reservation
     #[ORM\ManyToOne(inversedBy: 'reservation')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Destination $Destination = null;
+
+
+
+    public function __construct()
+    {
+        // Set startdate to today's date when creating a new instance
+        $this->startdate = new \DateTime();
+        $this->enddate = new \DateTime();
+
+    }
 
     public function getId(): ?int
     {

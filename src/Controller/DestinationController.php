@@ -3,9 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Destination;
+use App\Entity\Propertysearch;
 use App\Form\DestinationType;
+use App\Form\PropertysearchType;
 use App\Repository\DestinationRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +20,12 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 #[Route('/destination')]
 class DestinationController extends AbstractController
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
     #[Route('/', name: 'app_destination_index', methods: ['GET'])]
     public function index(DestinationRepository $destinationRepository): Response
     {
@@ -26,12 +35,17 @@ class DestinationController extends AbstractController
     }
     #[Route('/destinations', name: 'app_destination_indextemp', methods: ['GET'])]
 
-    public function showDest(EntityManagerInterface $entityManager)
+    public function showDest(EntityManagerInterface $entityManager, PaginatorInterface $paginator, Request $request)
     {
         // Récupérer tous les articles
-        $dest = $entityManager->getRepository(Destination::class)->findAll();
+        $destQuery = $entityManager->getRepository(Destination::class)->findAll(); // Get all destinations query
+        
+        $dest = $paginator->paginate(
+            $destQuery, // Query to paginate
+            $request->query->getInt('page', 1), /*page number*/
+            3 /*limit per page*/
+        );
 
-    
         // Créer le rendu Twig
         return $this->render('destination/distinations.html.twig', [
             'destination' => $dest,
@@ -103,20 +117,31 @@ class DestinationController extends AbstractController
   
 
     #[Route('/{id}/edit', name: 'app_destination_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Destination $destination, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Destination $destination, EntityManagerInterface $entityManager, SluggerInterface $slugger,$id ): Response
     {
-        $form = $this->createForm(DestinationType::class, $destination);
+        $activite = $this->entityManager->getRepository(Destination::class)->find($id);
+        $form = $this->createForm(DestinationType::class, $activite);
+
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
+            $image = $request->files->get('destination')['img'];
+            $uploadsDirectory = $this->getParameter('destination_img');
+            $filename = md5(uniqid()) . '.' . $image->guessExtension();
+            $image->move(
+                $uploadsDirectory,
+                $filename
+            );
+        
+            $activite->setImg($filename);
             $entityManager->flush();
-
-            return $this->redirectToRoute('app_destination_index', [], Response::HTTP_SEE_OTHER);
+        
+            return $this->redirectToRoute('app_destination_index');
         }
-
-        return $this->renderForm('destination/edit.html.twig', [
-            'destination' => $destination,
-            'form' => $form,
+        
+        return $this->render('destination/edit.html.twig', [
+            'destination' => "destination",
+            'form' => $form->createView(),
         ]);
     }
 
@@ -130,4 +155,10 @@ class DestinationController extends AbstractController
 
         return $this->redirectToRoute('app_destination_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+
+
+    
 }
+

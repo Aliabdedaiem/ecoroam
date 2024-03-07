@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Destination;
+use App\Entity\Propertysearch;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -45,4 +46,5 @@ class DestinationRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
 }

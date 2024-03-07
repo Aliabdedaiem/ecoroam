@@ -213,6 +213,10 @@ iframe {
   border: none;
   display: inherit;
 }
+.containerr {
+  display: flex;
+}
+
 
 img {
   max-width: 100%;

@@ -11,6 +11,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
+
 
 #[Route('/reservation')]
 class ReservationController extends AbstractController
@@ -26,6 +30,81 @@ class ReservationController extends AbstractController
             'reservations' => $reservationRepository->findAll(),
         ]);
     }
+
+
+
+    #[Route('/reservations', name: 'app_reservation_indexf', methods: ['GET'])]
+    public function indexf(ReservationRepository $reservationRepository): Response
+    {
+        return $this->render('reservation/indexf.html.twig', [
+            'reservations' => $reservationRepository->findAll(),
+        ]);
+    }
+
+
+    #[Route('/stats', name: 'app_destination_stats', methods: ['GET', 'POST'])]
+    public function coachWithMostPrograms(EntityManagerInterface $entityManager): Response
+    {
+        // Get all programs
+        $programs = $entityManager->getRepository(Reservation::class)->findAll();
+
+        // Count the number of programs for each coach
+        $coachProgramCounts = [];
+        foreach ($programs as $program) {
+            $coachName = $program->getdestination()->getName(); // Assuming getName() returns the coach's name
+            if (!isset($coachProgramCounts[$coachName])) {
+                $coachProgramCounts[$coachName] = 0;
+            }
+            $coachProgramCounts[$coachName]++;
+        }
+
+        // Sort coaches by the number of programs
+        arsort($coachProgramCounts);
+
+        // Render the view with the best coach and the number of programs
+        return $this->render('reservation/with_most_programs.html.twig', [
+            'coachProgramCounts' => $coachProgramCounts,
+        ]);
+    }
+
+    #[Route('/show/{id}', name: 'app_reservation_showpdf', methods: ['GET'])]
+    public function showpdf(Reservation $reservation): Response
+    {
+        try {
+            // Configure Dompdf options
+            $pdfOptions = new Options();
+            $pdfOptions->set('defaultFont', 'Arial');
+            
+            // Instantiate Dompdf with options
+            $dompdf = new Dompdf($pdfOptions);
+            
+            // Retrieve HTML content from Twig template
+            $html = $this->renderView('reservation/reservation.html.twig', [
+                'reservation' => $reservation,
+            ]);
+            
+            // Load HTML into Dompdf
+            $dompdf->loadHtml($html);
+            
+            // (Optional) Set paper size and orientation
+            $dompdf->setPaper('A4', 'portrait');
+
+            // Render HTML as PDF
+            $dompdf->render();
+
+            // Generate response with PDF content and download headers
+            return new Response($dompdf->output(), 200, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'attachment; filename="reservation.pdf"',
+            ]);
+        } catch (\Exception $e) {
+            // Handle exceptions
+            return new Response('An error occurred: ' . $e->getMessage());
+        }
+    }
+
+
+   
 /*
     #[Route('/new', name: 'app_reservation_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -145,6 +224,15 @@ class ReservationController extends AbstractController
         ]);
     }
 
+
+    #[Route('/showback/{id}', name: 'app_reservation_showb', methods: ['GET'])]
+    public function showback(Reservation $reservation): Response
+    {
+        return $this->render('reservation/showb.html.twig', [
+            'reservation' => $reservation,
+        ]);
+    }
+
     #[Route('/{id}/edit', name: 'app_reservation_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Reservation $reservation, EntityManagerInterface $entityManager): Response
     {
@@ -152,12 +240,49 @@ class ReservationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $daysNumbers = $this->calculateDays($reservation->getStartDate(), $reservation->getEndDate());
+        
+            // Calculate total price based on daysNumbers and destination price
+            $totalPrice = $this->calculateTotalPrice($daysNumbers, $reservation->getDestination());
+
+            // Set the calculated values to the reservation object
+            $reservation->setNumber($daysNumbers);
+            $reservation->setTotalPrice($totalPrice);
+            $reservation->setStatus("Done");
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_reservation_indexf', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('reservation/edit.html.twig', [
+            'reservation' => $reservation,
+            'form' => $form,
+        ]);
+    }
+
+
+    #[Route('/{id}/editback', name: 'app_reservation_editback', methods: ['GET', 'POST'])]
+    public function editback(Request $request, Reservation $reservation, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(ReservationType::class, $reservation);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $daysNumbers = $this->calculateDays($reservation->getStartDate(), $reservation->getEndDate());
+        
+            // Calculate total price based on daysNumbers and destination price
+            $totalPrice = $this->calculateTotalPrice($daysNumbers, $reservation->getDestination());
+
+            // Set the calculated values to the reservation object
+            $reservation->setNumber($daysNumbers);
+            $reservation->setTotalPrice($totalPrice);
+            $reservation->setStatus("Done");
             $entityManager->flush();
 
             return $this->redirectToRoute('app_reservation_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('reservation/edit.html.twig', [
+        return $this->renderForm('reservation/editback.html.twig', [
             'reservation' => $reservation,
             'form' => $form,
         ]);
@@ -171,6 +296,20 @@ class ReservationController extends AbstractController
             $entityManager->flush();
         }
 
+        return $this->redirectToRoute('app_reservation_indexf', [], Response::HTTP_SEE_OTHER);
+    }
+
+
+    #[Route('/delete/{id}', name: 'app_reservation_deleteback',methods: ['GET', 'POST'])]
+    public function deleteback(Request $request, Reservation $reservation, EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$reservation->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($reservation);
+            $entityManager->flush();
+        }
+
         return $this->redirectToRoute('app_reservation_index', [], Response::HTTP_SEE_OTHER);
     }
+  
 }
+

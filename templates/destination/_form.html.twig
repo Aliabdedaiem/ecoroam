@@ -19,9 +19,7 @@
                     <div class="body">
                         
                                 {{ form_widget(form) }}
-                            <button  class="btn btn-raised btn-primary btn-round waves-effect">{{ button_label|default('Save') }}</button>
-                            <button  class="btn btn-raised btn-primary btn-round waves-effect"><a href="{{ path('app_destination_index') }}">back to list</a></button>
-
+                                <button class="btn btn-raised btn-primary btn-round waves-effect"{{ button_label|default('Save') == 'Save' ? ' formnovalidate' }}>Save</button>                            <button  class="btn btn-raised btn-primary btn-round waves-effect"><a href="{{ path('app_destination_index') }}">back to list</a></button>
                         
                     </div>
                 </div>

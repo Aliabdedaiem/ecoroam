@@ -5,6 +5,7 @@
 {% block body %}
     <h1>Reservation index</h1>
 
+
     <table class="table">
         <thead>
             <tr>
@@ -30,10 +31,17 @@
                 <td>{{ reservation.status }}</td>
                 <td>{{ reservation.destination.id }}</td>
 
-                <td>
-                    <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}">show</a>
-                    <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}">edit</a>
-                </td>
+                
+                     <td>
+                                    <a class="button button-small edit" title="Edit" href="{{ path('app_reservation_editback', {'id': reservation.id}) }}">
+                                        <i class="zmdi zmdi-edit"></i>
+                                    </a>
+                                    
+                                    <a class="button button-small edit" title="Delete" href="{{ path('app_reservation_deleteback', {'id': reservation.id}) }}">
+                                        <i class="zmdi zmdi-delete"></i>
+                                    </a>
+                                    </td>
+                
             </tr>
         {% else %}
             <tr>
@@ -42,5 +50,6 @@
         {% endfor %}
         </tbody>
     </table>
+   
 
 {% endblock %}

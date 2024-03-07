@@ -6,6 +6,7 @@
 
 {% block body %}
 
+
     <h3>Destination Table</h3>
     <div class="row">
                             <div class="col-md-12">
@@ -18,7 +19,6 @@
                 <th>State</th>
                 <th>Address</th>
                 <th>Prix</th>
-                <th>Description</th>
                 <th>actions</th>
                                 </tr>
                                 </thead>
@@ -32,7 +32,6 @@
                 <td>{{ destination.state }}</td>
                 <td>{{ destination.address }}</td>
                 <td>{{ destination.prix }}</td>
-                <td>{{ destination.description }}</td>
                                    
                                     <td>
                                     <a class="button button-small edit" title="Edit" href="{{ path('app_destination_edit', {'id': destination.id}) }}">
@@ -53,5 +52,10 @@
                                 </thread>
                                 </table>
   <button  class="btn btn-raised btn-primary btn-round waves-effect"><a href="{{ path('app_destination_new') }}">Create</a></button>
+    <button  class="btn btn-raised btn-primary btn-round waves-effect"><a href="{{ path('app_destination_stats') }}">stats</a></button>
+
                                 </div>
+                               
+ 
+    
 {% endblock %}
